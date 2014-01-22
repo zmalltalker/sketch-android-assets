@@ -1,0 +1,71 @@
+// Generate Android assets from all slices in current page (shift cmd a)
+// Assumes pixel count in Sketch is hdpi
+// Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi}
+
+function main(){
+    var fileUrl = [doc fileURL];
+    if (fileUrl == null) {
+	alert("You need to save your document for me to know where to save it");
+	return;
+    }
+    var base_dir = path_to_current_document();
+
+    var all_slices = [[doc currentPage] slices];
+    var slice_count = [all_slices length];
+    for (var i = 0; i < slice_count; i++){
+	log("Processing slice");
+	var slice = [all_slices objectAtIndex: i];
+	process_slice(slice, doc, base_dir);
+    }
+}
+
+function alert(msg){
+    var app = [NSApplication sharedApplication];
+    [app displayDialog:msg withTitle:"Hey"];
+}
+
+function path_to_current_document(){
+    var file_url = [doc fileURL],
+    file_path = [file_url path],
+    base_dir = file_path.split([doc displayName])[0];
+    return base_dir;
+}
+
+function process_slice(slice, doc, base_dir){
+    var frame = [slice frame];
+    var slice_name = [slice name];
+
+    var factors = [
+	["mdpi",0.75],
+	["hdpi", 1],
+	["xhdpi", 1.5],
+	["xxhdpi", 2]];
+
+    for (var i = 0; i < factors.length; i++){
+	var factor = factors[i][1];
+	var name = factors[i][0];
+	log("Processing " + slice_name + name + "(" + factor + ")");
+	var version = copy_layer_with_factor(slice, factor);
+	var file_name = base_dir + "/drawable-" + name + "/" + slice_name + ".png";
+	[doc saveArtboardOrSlice: version toFile:file_name];
+	log("Saved " + file_name);
+    }
+}
+
+function copy_layer_with_factor(original_slice, factor){
+    var copy = [original_slice duplicate];
+    var frame = [copy frame];
+    [frame setX:-100000];
+    [frame setY:-100000];
+
+    var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
+    slice = [MSSlice sliceWithRect:rect scale:factor];
+    [copy removeFromParent];
+
+    // [frame setWidth:[[slice frame] width] * factor];
+    // [frame setHeight:[[slice frame] height] * factor];
+    return slice;
+}
+
+
+main();
