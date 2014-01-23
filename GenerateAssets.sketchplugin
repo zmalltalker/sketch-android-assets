@@ -55,8 +55,6 @@ function process_slice(slice, doc, base_dir){
 function copy_layer_with_factor(original_slice, factor){
     var copy = [original_slice duplicate];
     var frame = [copy frame];
-    [frame setX:-100000];
-    [frame setY:-100000];
 
     var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
     slice = [MSSlice sliceWithRect:rect scale:factor];
