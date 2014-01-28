@@ -1,5 +1,5 @@
 // Generate Android assets from all slices in current page (shift cmd a)
-// Assumes pixel count in Sketch is hdpi
+// Assumes pixel count in Sketch is mdpi, so 1dp=1px
 // Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi}
 
 function main(){
@@ -9,6 +9,10 @@ function main(){
 	return;
     }
     var base_dir = path_to_current_document();
+    if (base_dir == null){
+	alert("Not saving any assets");
+	return;
+    }
 
     var all_slices = [[doc currentPage] slices];
     var slice_count = [all_slices length];
@@ -25,10 +29,20 @@ function alert(msg){
 }
 
 function path_to_current_document(){
-    var file_url = [doc fileURL],
-    file_path = [file_url path],
-    base_dir = file_path.split([doc displayName])[0];
-    return base_dir;
+    // var file_url = [doc fileURL],
+    // file_path = [file_url path],
+    // base_dir = file_path.split([doc displayName])[0];
+    // return base_dir;
+    var panel = [NSOpenPanel openPanel];
+    [panel setMessage:"Where do you want to place your assets?"];
+    [panel setCanChooseDirectories: YES];
+    [panel setCanChooseFiles: NO];
+
+
+    if ([panel runModal] == NSOKButton){
+	var message = [panel filename];
+	return message;
+    }
 }
 
 function process_slice(slice, doc, base_dir){
@@ -36,10 +50,10 @@ function process_slice(slice, doc, base_dir){
     var slice_name = [slice name];
 
     var factors = [
-	["mdpi",0.75],
-	["hdpi", 1],
-	["xhdpi", 1.5],
-	["xxhdpi", 2]];
+	["mdpi",1],
+	["hdpi", 1.5],
+	["xhdpi", 2],
+	["xxhdpi", 3]];
 
     for (var i = 0; i < factors.length; i++){
 	var factor = factors[i][1];
