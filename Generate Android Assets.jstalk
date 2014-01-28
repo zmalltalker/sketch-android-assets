@@ -97,8 +97,6 @@ function copy_layer_with_factor(original_slice, factor){
     slice = [MSSlice sliceWithRect:rect scale:factor];
     [copy removeFromParent];
 
-    // [frame setWidth:[[slice frame] width] * factor];
-    // [frame setHeight:[[slice frame] height] * factor];
     return slice;
 }
 
