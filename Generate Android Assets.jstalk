@@ -28,7 +28,12 @@ library.sandbox = {
 }
 
 function main(){
-    var base_dir = path_to_current_document();
+    var fileUrl = [doc fileURL];
+    if (fileUrl == null) {
+	alert("You need to save your document for me to know where to save it");
+	return;
+    }
+    var base_dir = get_dir_from_prompt(get_cwd());
     if (base_dir == null){
 	alert("Not saving any assets");
 	return;
@@ -42,7 +47,7 @@ function main(){
 	    process_slice(slice, doc, base_dir);
 	});
     });
-    library.sandbox.openInFinder(base_dir);
+    library.sandbox.openInFinder();
 }
 
 function alert(msg){
@@ -50,11 +55,24 @@ function alert(msg){
     [app displayDialog:msg withTitle:"Hey"];
 }
 
-function path_to_current_document(){
+// Return current working directory
+// This works better for the designer's workflow, as they mostly want to
+// save assets in the current directory
+function get_cwd(){
+    var file_url = [doc fileURL],
+    file_path = [file_url path],
+    base_dir = file_path.split([doc displayName])[0];
+    return base_dir;
+}
+
+// Let the user specify a directory
+function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
     [panel setMessage:"Where do you want to place your assets?"];
     [panel setCanChooseDirectories: YES];
     [panel setCanChooseFiles: NO];
+    var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
+    [panel setDirectoryURL:default_dir];
 
 
     if ([panel runModal] == NSOKButton){
