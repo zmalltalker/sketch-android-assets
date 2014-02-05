@@ -1,6 +1,6 @@
 // Generate Android assets from all slices in current page (shift cmd a)
-// Assumes pixel count in Sketch is mdpi, so 1dp=1px
-// Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi}
+// Assumes pixel count in Sketch is xhdpi, so 1dp=2px
+// Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}
 
 var library = {}
 library.sandbox = {
@@ -28,11 +28,6 @@ library.sandbox = {
 }
 
 function main(){
-    var fileUrl = [doc fileURL];
-    if (fileUrl == null) {
-	alert("You need to save your document for me to know where to save it");
-	return;
-    }
     var base_dir = path_to_current_document();
     if (base_dir == null){
 	alert("Not saving any assets");
@@ -73,10 +68,11 @@ function process_slice(slice, doc, base_dir){
     var slice_name = [slice name];
 
     var factors = [
-	["mdpi",1],
-	["hdpi", 1.5],
-	["xhdpi", 2],
-	["xxhdpi", 3]];
+	["mdpi",0.5],
+	["hdpi", 0.75],
+	["xhdpi", 1],
+	["xxhdpi", 1.5],
+	["xxxhdpi", 2]];
 
     for (var i = 0; i < factors.length; i++){
 	var factor = factors[i][1];
