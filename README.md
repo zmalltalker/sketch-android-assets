@@ -1,11 +1,23 @@
-# sketch-android-assets
+# sketch-mobile-assets
 
-Generate Android assets in Sketch.
+Based on https://github.com/zmalltalker/sketch-android-assets. This plugin for Bohemian Coding's Sketch app will generate iOS and Android assets for slices on your current artboard. 
 
-## Installation
 
-Check out this repository into your `~/Library/Application Support/sketch/Plugins`, and you're good to go
+## Notes:
+  * This plugin assumes you're designing @1x 
+  * Android naming convention: android/drawable-{DPI}/ic`_`{prefix}`_`{slice name}`_`{suffix}`_`{width}.png _(i.e. ic_btn_menu_pressed_24.png)_
+  * iOS naming convention: iOS/ic`_`{prefix}`_`{slice name}`_`{suffix}`_`{width}{`_`@2x}.png _(i.e. ic_btn_menu_pressed_24@2x.png)_
+  * This will overwrite any previously generated assets without prompting
 
-## Assumptions
 
-The plugin assumes you design your layouts in xhdpi, which means 2px = 1dp
+## To use:
+  * Copy the 'Generate Android Assets.jstalk' file to `~/Library/Application Support/sketch/Plugins` 
+  * Name your artboards (this will become the {suffix}- i.e. normal, pressed, disabled, etc)
+  * Create & name slices for your assets (this will become {slice_name})
+  * Run Plugins > Generate Android Assets
+  * Choose a destination folder + enter a prefix 
+  * Magic!
+
+
+## Known issues:
+  * Occasionally, this winds up generating some weird empty layers at the top of your artboards. If these appear, hit undo and they'll be removed.

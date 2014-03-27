@@ -1,4 +1,7 @@
-// Generate Windows Phone assets from all slices in current page (shift cmd w)
+// Generate Android assets from all slices in current page (shift cmd a)
+// Assumes pixel count in Sketch is mdpi, so 1px = 1dp
+// Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}
+// File name format: ic_{prefix}_{slice name}_{suffix}_{size}.png (i.e. ic_btn_menu_pressed_24.png)
 
 var library = {}
 library.sandbox = {
@@ -28,7 +31,7 @@ library.sandbox = {
 function main(){
     var fileUrl = [doc fileURL];
     if (fileUrl == null) {
-	alert("You need to save your document for me to know where to save it");
+	alert("Please save your document before exporting assets");
 	return;
     }
     var base_dir = get_dir_from_prompt(get_cwd());
@@ -37,14 +40,15 @@ function main(){
 	return;
     }
 
-    var pages = [doc pages];
+    var page = [doc currentPage];
+    var prefix = [doc askForUserInput:"Enter a prefix" initialValue:" "];
+    var suffix = [[doc currentPage] name];
 
-    library.sandbox.forEachObj([doc pages], function(page){
-	var slices = [page allSlices];
-	library.sandbox.forEachObj(slices, function(slice){
-	    process_slice(slice, doc, base_dir);
-	});
+    var slices = [page allSlices];
+    library.sandbox.forEachObj(slices, function(slice){
+        process_slice(slice, doc, base_dir, prefix, suffix);
     });
+
     library.sandbox.openInFinder();
 }
 
@@ -79,27 +83,42 @@ function get_dir_from_prompt(){
     }
 }
 
-function process_slice(slice, doc, base_dir){
+function process_slice(slice, doc, base_dir, prefix, suffix){
     var frame = [slice frame];
     var slice_name = [slice name];
+    var slice_width = [[slice frame] width];
 
-    var factors = [
-	["WVGA", 1],
-	["WXGA", 1.6],
-	["720p", 1.5],
-	["1080p", 1.5]];
+    var androidFactors = [
+	["mdpi",1],
+	["hdpi", 1.5],
+	["xhdpi", 2],
+	["xxhdpi", 3],
+	["xxxhdpi", 4]];
+	
+    var iOSFactors = [
+	["", 1],
+	["@2x", 2]
+    ];
 
-
-    for (var i = 0; i < factors.length; i++){
-	var factor = factors[i][1];
-	var name = factors[i][0];
-	log("Processing " + slice_name + name + "(" + factor + ")");
-	var version = copy_layer_with_factor(slice, factor);
-	var file_name = base_dir + "/" + name + "/" + slice_name + ".png";
-	[doc saveArtboardOrSlice: version toFile:file_name];
-	log("Saved " + file_name);
+    for (var i = 0; i < androidFactors.length; i++){
+	    var factor = androidFactors[i][1];
+	    var name = androidFactors[i][0];
+        var slice_size = [slice_width * factor];
+	    var version = copy_layer_with_factor(slice, factor);
+	    var file_name = base_dir + "/android/drawable-" + name + "/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + ".png";
+	    [doc saveArtboardOrSlice:version toFile:file_name];
+    }
+    
+    for (var i = 0; i < iOSFactors.length; i++){
+	    var factor = iOSFactors[i][1];
+	    var name = iOSFactors[i][0];
+        var slice_size = [slice_width * factor];
+	    var version = copy_layer_with_factor(slice, factor);
+	    var file_name = base_dir + "/iOS/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + name + ".png";
+	    [doc saveArtboardOrSlice:version toFile:file_name];
     }
 }
+
 
 function copy_layer_with_factor(original_slice, factor){
     var copy = [original_slice duplicate];
