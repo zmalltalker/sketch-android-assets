@@ -103,19 +103,23 @@ function process_slice(slice, doc, base_dir, prefix, suffix){
     for (var i = 0; i < androidFactors.length; i++){
 	    var factor = androidFactors[i][1];
 	    var name = androidFactors[i][0];
+	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
 	    var file_name = base_dir + "/android/drawable-" + name + "/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
+	    log("Saved " + file_name);
     }
     
     for (var i = 0; i < iOSFactors.length; i++){
 	    var factor = iOSFactors[i][1];
 	    var name = iOSFactors[i][0];
+	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
 	    var file_name = base_dir + "/iOS/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + name + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
+	    log("Saved " + file_name);
     }
 }
 
@@ -127,6 +131,8 @@ function copy_layer_with_factor(original_slice, factor){
     var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
     slice = [MSSlice sliceWithRect:rect scale:factor];
     [copy removeFromParent];
+    
+    log("Slicing " + slice);
 
     return slice;
 }
