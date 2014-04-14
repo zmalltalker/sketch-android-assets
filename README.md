@@ -4,6 +4,7 @@ Based on https://github.com/zmalltalker/sketch-android-assets. This plugin for B
 
 
 ## Notes:
+  * This was designed for Sketch 2 - Sketch 3 now lets you do nearly all of this from within the app
   * This plugin assumes you're designing @1x 
   * Android naming convention: `android/drawable-{DPI}/ic_{prefix}_{slice name}_{suffix}_{width}.png` _(i.e. `ic_btn_menu_pressed_24.png`)_
   * iOS naming convention: `iOS/ic_{prefix}_{slice name}_{suffix}_{width}{_@2x}.png` _(i.e. `ic_btn_menu_pressed_24@2x.png`)_
