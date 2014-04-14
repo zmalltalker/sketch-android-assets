@@ -12,7 +12,7 @@ Based on https://github.com/zmalltalker/sketch-android-assets. This plugin for B
 
 
 ## To use:
-  * Copy the 'Generate Android Assets.jstalk' file to `~/Library/Application Support/sketch/Plugins` 
+  * Copy the 'Generate Mobile Assets.jstalk' file to `~/Library/Application Support/sketch/Plugins` 
   * Name your artboards (this will become the `{suffix}`- i.e. normal, pressed, disabled, etc)
   * Create & name slices for your assets (this will become `{slice_name}`)
   * Run Plugins > Generate Android Assets
