@@ -3,6 +3,8 @@
 // Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}
 // File name format: ic_{prefix}_{slice name}_{suffix}_{size}.png (i.e. ic_btn_menu_pressed_24.png)
 
+#import 'library/config.js'
+
 var library = {}
 library.sandbox = {
     // Utility: display a modal with message
@@ -19,34 +21,60 @@ library.sandbox = {
         }
     },
     openInFinder: function(path){
-	var finder_task = [[NSTask alloc] init],
-        open_finder_args = [NSArray arrayWithObjects:"-R", path, nil];
+	    var finder_task = [[NSTask alloc] init],
+            open_finder_args = [NSArray arrayWithObjects:"-R", path, nil];
 
-	[finder_task setLaunchPath:"/usr/bin/open"];
-	[finder_task setArguments:open_finder_args];
-	[finder_task launch];
+    	[finder_task setLaunchPath:"/usr/bin/open"];
+    	[finder_task setArguments:open_finder_args];
+    	[finder_task launch];
     }
 }
 
 function main(){
+    
     var fileUrl = [doc fileURL];
     if (fileUrl == null) {
-	alert("Please save your document before exporting assets");
-	return;
+	    alert("Please save your document before exporting assets");
+	    return;
     }
+    
+    var includeSuffix = configVars.includeSuffix;
+    var suffix = "";
+    if (includeSuffix == "yes"){
+        if (configVars.suffixName == null){
+            suffix = "_" + [[doc currentPage] name];
+        } else {
+            suffix = "_" + configVars.suffixName;
+        }
+    } 
+    
+    var includePrefix = configVars.includePrefix;
+    var prefix = "";
+    if (includePrefix == "yes"){
+        if (configVars.prefixName == null){
+            prefix = [doc askForUserInput:"Enter a prefix (like launcher, menu, dialog, etc):" initialValue:""];
+            if (prefix == null || prefix == ""){
+                prefix = "";
+            } else {
+                prefix = prefix + "_";
+            }
+        } else {
+            prefix = configVars.prefixName + "_";
+        }
+    } 
+    
     var base_dir = get_dir_from_prompt(get_cwd());
     if (base_dir == null){
-	alert("Not saving any assets");
-	return;
+	    alert("Not saving any assets");
+	    return;
     }
 
+    var size = configVars.size;
     var page = [doc currentPage];
-    var prefix = [doc askForUserInput:"Enter a prefix" initialValue:" "];
-    var suffix = [[doc currentPage] name];
-
-    var slices = [page allSlices];
+    var slices = [[doc currentPage] exportableLayers];
+    
     library.sandbox.forEachObj(slices, function(slice){
-        process_slice(slice, doc, base_dir, prefix, suffix);
+        process_slice(slice, doc, base_dir, prefix, suffix, size);
     });
 
     library.sandbox.openInFinder();
@@ -75,18 +103,21 @@ function get_dir_from_prompt(){
     [panel setCanChooseFiles: NO];
     var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
     [panel setDirectoryURL:default_dir];
-
-
     if ([panel runModal] == NSOKButton){
-	var message = [panel filename];
-	return message;
+	    var message = [panel filename];
+	    return message;
     }
 }
 
-function process_slice(slice, doc, base_dir, prefix, suffix){
+function process_slice(slice, doc, base_dir, prefix, suffix, size){
     var frame = [slice frame];
     var slice_name = [slice name];
-    var slice_width = [[slice frame] width];
+    var slice_width = "";
+    
+    if (size == "yes"){
+        slice_width = "_" + [[slice frame] width];
+    }
+    
 
     var androidFactors = [
 	["mdpi",1],
@@ -106,7 +137,7 @@ function process_slice(slice, doc, base_dir, prefix, suffix){
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/android/drawable-" + name + "/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + ".png";
+	    var file_name = base_dir + "/android/drawable-" + name + "/ic_" + prefix + slice_name + suffix + slice_width + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
@@ -117,7 +148,7 @@ function process_slice(slice, doc, base_dir, prefix, suffix){
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/iOS/ic_" + prefix + "_" + slice_name + "_" + suffix + "_" + slice_width + name + ".png";
+	    var file_name = base_dir + "/iOS/ic_" + prefix + slice_name + suffix + slice_width + name + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
