@@ -137,7 +137,7 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/android/drawable-" + name + "/ic_" + prefix + slice_name + suffix + slice_width + ".png";
+	    var file_name = base_dir + "/android/" + name + "/ic_" + prefix + slice_name + suffix + slice_width + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
