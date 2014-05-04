@@ -1,24 +1,27 @@
 # sketch-mobile-assets
 
-Based on https://github.com/zmalltalker/sketch-android-assets. This plugin for Bohemian Coding's Sketch app will generate iOS and Android assets for slices on your current artboard. 
+_Based on [zmtalker/sketch-android-assets](https://github.com/zmalltalker/sketch-android-assets)_ 
 
+This plugin for Bohemian Coding's Sketch app will generate iOS and Android assets for slices on your current page. Assets are automatically created at mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi for Android and @1x/@2x for iOS, then named and organized according to platform conventions. 
 
-## Notes:
-  * This was designed for Sketch 2 - Sketch 3 now lets you do nearly all of this from within the app
-  * This plugin assumes you're designing @1x 
-  * Android naming convention: `android/drawable-{DPI}/ic_{prefix}_{slice name}_{suffix}_{width}.png` _(i.e. `ic_btn_menu_pressed_24.png`)_
-  * iOS naming convention: `iOS/ic_{prefix}_{slice name}_{suffix}_{width}{_@2x}.png` _(i.e. `ic_btn_menu_pressed_24@2x.png`)_
-  * This will overwrite any previously generated assets without prompting
+**NOTE:** This plugin is designed for **Sketch 3**. It assumes you're designing @1x, and will overwrite any previously generated assets without prompting.
 
+### Setup:
+* Copy the `Generate Mobile Assets.jstalk` file and `/library` folder into your Sketch plugins folder 
+ * _You can find your plugins folder by going to 'Plugins' > 'Reveal plugins folder'_
+* Update `library/config.js` with your preferred naming conventions
 
-## To use:
-  * Copy the 'Generate Mobile Assets.jstalk' file to `~/Library/Application Support/sketch/Plugins` 
-  * Name your artboards (this will become the `{suffix}`- i.e. normal, pressed, disabled, etc)
-  * Create & name slices for your assets (this will become `{slice_name}`)
-  * Run Plugins > Generate Android Assets
-  * Choose a destination folder + enter a prefix 
-  * Magic!
+### To use:
+* **Create & name slices for each of your assets**
+* Run Plugins > Generate Android Assets, or hit &#8984;&#8679;A
+* Choose a destination folder
+* Magic!  
 
+&nbsp;
+- - -
+&nbsp;  
 
-## Known issues:
-  * Occasionally, this winds up generating some weird empty layers at the top of your artboards. If these appear, hit undo and they'll be removed.
+##### Last updated 5/2/14
+ * Updated to now work on Sketch v3
+ * Weird empty slices shouldn't be generated anymore
+ * Added file name config options
