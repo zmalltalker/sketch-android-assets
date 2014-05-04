@@ -14,7 +14,7 @@ library.sandbox = {
     },
     // each-like iterator for Obj-C types
     forEachObj: function(array, callback){
-        var count = [array length];
+        var count = [array count];
         for (var i = 0; i < count; i++){
             var el = [array objectAtIndex: i];
             callback(el);
@@ -99,8 +99,8 @@ function get_cwd(){
 function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
     [panel setMessage:"Where do you want to place your assets?"];
-    [panel setCanChooseDirectories: YES];
-    [panel setCanChooseFiles: NO];
+    [panel setCanChooseDirectories: true];
+    [panel setCanChooseFiles: false];
     var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
     [panel setDirectoryURL:default_dir];
     if ([panel runModal] == NSOKButton){
@@ -118,22 +118,24 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
         slice_width = "_" + [[slice frame] width];
     }
     
-
-    var androidFactors = [
-	["mdpi",1],
-	["hdpi", 1.5],
-	["xhdpi", 2],
-	["xxhdpi", 3],
-	["xxxhdpi", 4]];
+    var baseSize = configVars.baseSize;
+    
+    var androidFactors = [NSArray arrayWithObjects:
+        ["mdpi",1/baseSize],
+        ["hdpi", 1.5/baseSize],
+        ["xhdpi", 2/baseSize],
+        ["xxhdpi", 3/baseSize],
+        ["xxxhdpi", 4/baseSize]];
 	
-    var iOSFactors = [
-	["", 1],
-	["@2x", 2]
-    ];
+    var iOSFactors = [NSArray arrayWithObjects:
+	    ["", 1/baseSize],
+	    ["@2x", 2/baseSize]];
 
-    for (var i = 0; i < androidFactors.length; i++){
-	    var factor = androidFactors[i][1];
-	    var name = androidFactors[i][0];
+    for (var i = 0; i < [androidFactors count]; i++){
+        var base = [androidFactors objectAtIndex:i];
+        var factor = [base objectAtIndex:1];
+        var name = [base objectAtIndex:0];
+        
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
@@ -142,9 +144,10 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
 	    log("Saved " + file_name);
     }
     
-    for (var i = 0; i < iOSFactors.length; i++){
-	    var factor = iOSFactors[i][1];
-	    var name = iOSFactors[i][0];
+    for (var i = 0; i < [iOSFactors count]; i++){
+        var base = [iOSFactors objectAtIndex:i];
+        var factor = [base objectAtIndex:1];
+        var name = [base objectAtIndex:0];
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
@@ -156,12 +159,12 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
 
 
 function copy_layer_with_factor(original_slice, factor){
-    var copy = [original_slice duplicate];
-    var frame = [copy frame];
+    var copySlice = [original_slice duplicate];
+    var frame = [copySlice frame];
 
-    var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
+    var rect = [copySlice rectByAccountingForStyleSize:[[copySlice absoluteRect] rect]],
     slice = [MSSlice sliceWithRect:rect scale:factor];
-    [copy removeFromParent];
+    [copySlice removeFromParent];
     
     log("Slicing " + slice);
 
