@@ -120,6 +120,8 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
     
     var baseSize = configVars.baseSize;
     
+
+    
     var androidFactors = [NSArray arrayWithObjects:
         ["mdpi",1/baseSize],
         ["hdpi", 1.5/baseSize],
@@ -128,8 +130,8 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
         ["xxxhdpi", 4/baseSize]];
 	
     var iOSFactors = [NSArray arrayWithObjects:
-	    ["", 1/baseSize],
-	    ["@2x", 2/baseSize]];
+	    [".png", 1/baseSize],
+	    ["@2x.png", 2/baseSize]];
 
     for (var i = 0; i < [androidFactors count]; i++){
         var base = [androidFactors objectAtIndex:i];
@@ -148,10 +150,11 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
         var base = [iOSFactors objectAtIndex:i];
         var factor = [base objectAtIndex:1];
         var name = [base objectAtIndex:0];
+        
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/iOS/ic_" + prefix + slice_name + suffix + slice_width + name + ".png";
+	    var file_name = base_dir + "/iOS/ic_" + prefix + slice_name + suffix + slice_width + name;
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
