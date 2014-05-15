@@ -11,7 +11,7 @@ library.sandbox = {
     },
     // each-like iterator for Obj-C types
     forEachObj: function(array, callback){
-        var count = [array length];
+        var count = [array count];
         for (var i = 0; i < count; i++){
             var el = [array objectAtIndex: i];
             callback(el);
@@ -39,12 +39,12 @@ function main(){
 	return;
     }
 
-   
+
     var slices = [doc allExportableLayers];
     library.sandbox.forEachObj(slices, function(slice){
 	process_slice(slice, doc, base_dir);
     });
-    
+
     library.sandbox.openInFinder();
 }
 
@@ -67,8 +67,8 @@ function get_cwd(){
 function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
     [panel setMessage:"Where do you want to place your assets?"];
-    [panel setCanChooseDirectories: YES];
-    [panel setCanChooseFiles: NO];
+    [panel setCanChooseDirectories: true];
+    [panel setCanChooseFiles: false];
     var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
     [panel setDirectoryURL:default_dir];
 

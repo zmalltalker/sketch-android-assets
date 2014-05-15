@@ -22,6 +22,7 @@ however, depending on how you installed Sketch:
 
 Once you have checked out the plugin repository into the relevant
 directory, you'll find the plugin functions under the Plugins menu in Sketch.
+
 ## Assumptions
 
 The plugin assumes you design your layouts in xhdpi, which means 2px = 1dp
