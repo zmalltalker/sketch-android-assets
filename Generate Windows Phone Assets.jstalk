@@ -67,8 +67,9 @@ function get_cwd(){
 function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
     [panel setMessage:"Where do you want to place your assets?"];
-    [panel setCanChooseDirectories: YES];
-    [panel setCanChooseFiles: NO];
+    [panel setCanChooseDirectories: true];
+    [panel setCanChooseFiles: false];
+	[panel setCanCreateDirectories: true];
     var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
     [panel setDirectoryURL:default_dir];
 
