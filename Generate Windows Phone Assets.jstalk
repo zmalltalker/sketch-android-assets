@@ -37,14 +37,12 @@ function main(){
 	return;
     }
 
-    var pages = [doc pages];
-
-    library.sandbox.forEachObj([doc pages], function(page){
-	var slices = [page allSlices];
-	library.sandbox.forEachObj(slices, function(slice){
-	    process_slice(slice, doc, base_dir);
-	});
+   	//process the selected slices
+    var slicesToOutput = selection;
+    library.sandbox.forEachObj(slicesToOutput, function(slice){
+		process_slice(slice, doc, base_dir);
     });
+
     library.sandbox.openInFinder();
 }
 
