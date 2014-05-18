@@ -37,14 +37,12 @@ function main(){
 	return;
     }
 
-    var pages = [doc pages];
-
-    library.sandbox.forEachObj([doc pages], function(page){
-	var slices = [page allSlices];
-	library.sandbox.forEachObj(slices, function(slice){
-	    process_slice(slice, doc, base_dir);
-	});
+   	//process the selected slices
+    var slicesToOutput = selection;
+    library.sandbox.forEachObj(slicesToOutput, function(slice){
+		process_slice(slice, doc, base_dir);
     });
+
     library.sandbox.openInFinder();
 }
 
@@ -67,8 +65,9 @@ function get_cwd(){
 function get_dir_from_prompt(){
     var panel = [NSOpenPanel openPanel];
     [panel setMessage:"Where do you want to place your assets?"];
-    [panel setCanChooseDirectories: YES];
-    [panel setCanChooseFiles: NO];
+    [panel setCanChooseDirectories: true];
+    [panel setCanChooseFiles: false];
+	[panel setCanCreateDirectories: true];
     var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
     [panel setDirectoryURL:default_dir];
 
