@@ -25,3 +25,6 @@ This plugin for Bohemian Coding's Sketch app will generate iOS and Android asset
  * Updated to now work on Sketch v3.0.2
  * Weird empty slices shouldn't be generated anymore
  * Added file name + size config options
+
+##### Known issues:
+ * Sketch bug: If you're trying to export an artboard and the object inside contains a border, the final exported size won't be correct. See [this issue](https://github.com/bomberstudios/sketch-framer/issues/31) for details. Easiest workaround is to manually create slices from your layer groups instead of generating slices from your artboards.
