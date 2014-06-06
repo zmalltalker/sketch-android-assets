@@ -46,7 +46,7 @@ function main(){
 		process_slice(slice, doc, base_dir);
     });
 
-    library.sandbox.openInFinder();
+    library.sandbox.openInFinder(base_dir + "/drawable-hdpi");
 }
 
 function alert(msg){
@@ -95,7 +95,7 @@ function process_slice(slice, doc, base_dir){
     for (var i = 0; i < factors.length; i++){
 	var factor = factors[i][1];
 	var name = factors[i][0];
-	log("Processing " + slice_name + name + "(" + factor + ")");
+	log("Processing " + slice_name + " " + name + " (" + factor + ")");
 	var version = copy_layer_with_factor(slice, factor);
 	var file_name = base_dir + "/drawable-" + name + "/" + slice_name + ".png";
 	[doc saveArtboardOrSlice: version toFile:file_name];
@@ -108,9 +108,8 @@ function copy_layer_with_factor(original_slice, factor){
     var frame = [copy frame];
 
     var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
-    slice = [MSSlice sliceWithRect:rect scale:factor];
+    slice = [MSExportRequest requestWithRect:rect scale:factor];
     [copy removeFromParent];
-
     return slice;
 }
 
