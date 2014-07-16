@@ -1,7 +1,7 @@
 // Generate Android assets from all slices in current page (shift cmd a)
 // Assumes pixel count in Sketch is mdpi, so 1px = 1dp
 // Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}
-// File name format: ic_{prefix}_{slice name}_{suffix}_{size}.png (i.e. ic_btn_menu_pressed_24.png)
+// File name format: {prefix}_{slice name}_{suffix}_{size}.png (i.e. btn_menu_pressed_24.png)
 
 #import 'library/config.js'
 
@@ -141,7 +141,7 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/android/" + name + "/ic_" + prefix + slice_name + suffix + slice_width + ".png";
+	    var file_name = base_dir + "/android/" + name + "/" + prefix + slice_name + suffix + slice_width + ".png";
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
@@ -154,7 +154,7 @@ function process_slice(slice, doc, base_dir, prefix, suffix, size){
 	    log("Processing " + slice_name + name + "(" + factor + ")");
         var slice_size = [slice_width * factor];
 	    var version = copy_layer_with_factor(slice, factor);
-	    var file_name = base_dir + "/iOS/ic_" + prefix + slice_name + suffix + slice_width + name;
+	    var file_name = base_dir + "/iOS/" + prefix + slice_name + suffix + slice_width + name;
 	    [doc saveArtboardOrSlice:version toFile:file_name];
 	    log("Saved " + file_name);
     }
