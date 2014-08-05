@@ -23,6 +23,41 @@ however, depending on how you installed Sketch:
 Once you have checked out the plugin repository into the relevant
 directory, you'll find the plugin functions under the Plugins menu in Sketch.
 
-## Assumptions
+## Base resolution (experimental)
 
-The plugin assumes you design your layouts in xhdpi, which means 2px = 1dp
+If the default assumption of one pixel in your Sketch designs being
+equal to 1dp, you can use a different factor either for a single
+Sketch document or for all documents you create.
+
+To use another resolution as the base, add a file named
+`.android_assets` (note the period at the beginning of the file name)
+with the contents
+
+```
+base_density:xxx
+```
+
+where `xxx` is the density you want to use, any of:
+
+* mdpi
+* hdpi
+* xhdpi
+* xxhdpi
+* xxxhdpi
+
+So if 1 pixel in your design should be 1 pixel on an MDPI display, use
+`base_density:mdpi`. The default base density is xhdpi.
+
+The file should be placed in one of two places:
+
+* if you're setting up defaults for a single Sketch document, add the
+  file to the same directory as your Sketch document
+* if you're setting up a default for *all* your Sketch document, add
+  it to your home folder (`/Users/<yourusername>/`).
+
+To use `hdpi` as your default density for all your Sketch documents,
+simply enter this command into a Terminal window:
+
+```shell
+echo "base_density:hdpi" > ~/.android_assets
+```
