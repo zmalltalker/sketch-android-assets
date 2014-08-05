@@ -46,7 +46,12 @@ where `xxx` is the density you want to use, any of:
 * xxxhdpi
 
 So if 1 pixel in your design should be 1 pixel on an MDPI display, use
-`base_density:mdpi`. The default base density is xhdpi.
+`base_density:mdpi`.
+
+If you don't specify a base density, the plugin will ask you which one
+to use for the document you're currently working on and create a
+configuration file for that. This means that the next time you run the
+plugin for this document, the density you selected previously will be used.
 
 The file should be placed in one of two places:
 
