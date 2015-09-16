@@ -184,6 +184,10 @@ function askForDefaultDensity(){
     return result;
 }
 
+function santize(fileName) {
+  return fileName.replace(/[^\w\d]/g, '_').toLowerCase();
+}
+
 function process_slice(slice, doc, base_dir, factors){
     log("Will process slices");
     var frame = [slice frame];
@@ -193,7 +197,7 @@ function process_slice(slice, doc, base_dir, factors){
 	var factor = factors[name];
 	log("Processing " + slice_name + " " + name + " (" + factor + ")");
 	var version = copy_layer_with_factor(slice, factor);
-	var file_name = base_dir + "/drawable-" + name + "/" + slice_name + ".png";
+	var file_name = base_dir + "/drawable-" + name + "/" + santize(slice_name) + ".png";
 	[doc saveArtboardOrSlice: version toFile:file_name];
 	log("Saved " + file_name);
     }
