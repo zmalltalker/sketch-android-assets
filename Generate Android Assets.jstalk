@@ -204,16 +204,16 @@ function process_slice(slice, doc, base_dir, factors){
 }
 
 function copy_layer_with_factor(original_slice, factor){
-    var copy = [original_slice duplicate];
-    var frame = [copy frame];
-
-    //var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
-    var rect = [copy absoluteDirtyRect],
-        slice = [MSExportRequest requestWithRect:rect scale:factor];
-
-    [copy removeFromParent];
-    return slice;
+  var copy = [original_slice duplicate];
+  var slice;
+  if (copy.className() == "MSArtboardGroup") {
+    var requestName = copy.name()
+    slice = MSExportRequest.requestWithName_rect(copy.name(),copy.absoluteRect().rect())
+  } else {
+    slice = GKRect.rectWithRect(copy.absoluteInfluenceRect())
+  }
+  [copy removeFromParent];
+  return slice;
 }
-
 
 main();
