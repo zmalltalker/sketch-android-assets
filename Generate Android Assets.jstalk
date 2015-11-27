@@ -205,14 +205,8 @@ function process_slice(slice, doc, base_dir, factors){
 
 function copy_layer_with_factor(original_slice, factor){
   var copy = [original_slice duplicate];
-  var slice;
-  if (copy.className() == "MSArtboardGroup") {
-    var requestName = copy.name()
-    slice = MSExportRequest.requestWithName_rect(copy.name(),copy.absoluteRect().rect())
-  } else {
-    slice = GKRect.rectWithRect(copy.absoluteInfluenceRect())
-  }
-  slice.scale = factor;
+  var rect = copy.className() == "MSArtboardGroup" ? rect = copy.absoluteRect().rect() : copy.absoluteInfluenceRect()
+  var slice = MSExportRequest.requestWithRect_scale(rect, factor)
   [copy removeFromParent];
   return slice;
 }
