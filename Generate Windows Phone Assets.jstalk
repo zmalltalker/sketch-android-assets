@@ -109,6 +109,7 @@ function copy_layer_with_factor(original_slice, factor){
   } else {
     slice = GKRect.rectWithRect(copy.absoluteInfluenceRect())
   }
+  slice.scale = factor;
   [copy removeFromParent];
   return slice;
 }
