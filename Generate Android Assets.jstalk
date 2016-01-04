@@ -56,8 +56,7 @@ library.sandbox = {
             var fileManager = [NSFileManager defaultManager];
             var fileContents = [NSString stringWithContentsOfFile:configFile];
 
-            if (fileContents != null)
-            {
+            if (fileContents != null) {
                 if (hit = fileContents.match(/^base_density:([a-z]*)/)) {
                     var density = hit[1];
                     log("Found base density: " + density + ", returning");
@@ -65,9 +64,7 @@ library.sandbox = {
                 } else {
                     log("Found config file, but no base_density specified in it");
                 }
-            }
-            else
-            {
+            } else {
                 log("fileContents is null!");
             }
         }
