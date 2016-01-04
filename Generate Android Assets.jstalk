@@ -55,7 +55,7 @@ library.sandbox = {
         } else {
             var fileManager = [NSFileManager defaultManager];
             var fileContents = [NSString stringWithContentsOfFile:configFile];
-            log(fileContents);
+
             if (fileContents != null)
             {
                 if (hit = fileContents.match(/^base_density:([a-z]*)/)) {
