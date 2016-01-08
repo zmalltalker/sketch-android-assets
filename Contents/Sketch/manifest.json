@@ -1,0 +1,28 @@
+{
+    "name": "Android Assets",
+    "description": "Sketch plugin for generating Android assets.",
+    "author": "Marius Mathiesen",
+    "homepage": "https://github.com/zmalltalker/sketch-android-assets/",
+    "version": 1.5,
+    "identifier": "no.shortcut.android-assets-plugin",
+    "compatibleVersion": "3.4.2",
+    "bundleVersion": 1,
+    "commands": [
+        {
+            "name": "Android Assets",
+            "identifier": "android-assets",
+            "script": "Generate Android Assets.cocoascript"
+        },
+        {
+            "name": "Windows Assets",
+            "identifier": "windows-assets",
+            "script": "Generate Windows Phone Assets.cocoascript"
+        }
+    ],
+    "menu": {
+        "items": [
+            "android-assets",
+            "windows-assets"
+        ]
+    }
+}
