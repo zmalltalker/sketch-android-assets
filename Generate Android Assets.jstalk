@@ -1,4 +1,4 @@
-// Generate Android assets from all slices in current page (shift cmd a)
+// Generate Android assets from all slices in current page (cmd alt a)
 // Assumes pixel count in Sketch is xhdpi, so 1dp=2px
 // Saves off all assets to path to current document + drawable-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}
 
