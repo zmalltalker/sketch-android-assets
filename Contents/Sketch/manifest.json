@@ -9,12 +9,15 @@
     "bundleVersion": 1,
     "commands": [
         {
-            "name": "Android Assets",
+            "name": "Generate Android Assets",
             "identifier": "android-assets",
-            "script": "Generate Android Assets.cocoascript"
+            "shortcut": "cmd shift a",
+            "script": "Generate Android Assets.cocoascript",
+            "handler": "generateAndroidAssets"
         },
         {
             "name": "Windows Assets",
+            "shortcut": "cmd shift w",
             "identifier": "windows-assets",
             "script": "Generate Windows Phone Assets.cocoascript"
         }

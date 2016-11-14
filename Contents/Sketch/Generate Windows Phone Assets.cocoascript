@@ -1,5 +1,3 @@
-// Generate Windows Phone assets from all slices in current page (shift cmd w)
-
 var library = {}
 library.sandbox = {
     // Utility: display a modal with message
