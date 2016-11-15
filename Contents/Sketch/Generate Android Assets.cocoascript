@@ -206,9 +206,11 @@ function process_slice(slice, doc, base_dir, factors) {
 function copy_layer_with_factor(original_slice, factor) {
     var copy = [original_slice duplicate];
     var rect = copy.className() == "MSArtboardGroup" ? rect = copy.absoluteRect().rect() : copy.absoluteInfluenceRect()
-    var slice = MSExportRequest.requestWithRect_scale(rect, factor)
+    var request = MSExportRequest.new();
+    request.rect = rect;
+    request.scale = factor;
     [copy removeFromParent];
-    return slice;
+    return request;
 }
 function generateAndroidAssets(context){
     var fileUrl = context.document.fileURL();
