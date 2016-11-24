@@ -116,14 +116,48 @@ function main() {
         alert("Not saving any assets");
         return;
     }
+    
+    //for asking if its icon or normal drawable
+    var iconOrDrawable = askForIconOrDrawable();
 
     //process the selected slices
     var slicesToOutput = selection;
     library.sandbox.forEachObj(slicesToOutput, function(slice) {
-        process_slice(slice, doc, base_dir, factors);
+        process_slice(slice, doc, base_dir, factors,iconOrDrawable);
     });
+    
+    if(iconOrDrawable == "Icon")
+            library.sandbox.openInFinder(base_dir + "/mipmap-hdpi");
+    else
+            library.sandbox.openInFinder(base_dir + "/drawable-hdpi");
+}
 
-    library.sandbox.openInFinder(base_dir + "/drawable-hdpi");
+
+function askForIconOrDrawable() {
+    var selectedItemIndex = 0;
+    var items = ["Icon","Drawable"];
+
+    var accContainer = [[NSView alloc] initWithFrame:NSMakeRect(0,0,200,25)];
+
+    var accessory = [[NSComboBox alloc] initWithFrame:NSMakeRect(0,0,200,25)];
+    [accessory addItemsWithObjectValues:items];
+    [accessory selectItemAtIndex:selectedItemIndex];
+
+    [accContainer addSubview:accessory];
+
+    var alert = [[NSAlert alloc] init];
+    [alert setMessageText:"Is it MipMap or Drawable ?"];
+    [alert addButtonWithTitle:'OK']
+    [alert addButtonWithTitle:'Cancel']
+    [alert setAccessoryView:accContainer]
+
+
+    var responseCode = [alert runModal]
+    var sel = [accessory indexOfSelectedItem]
+
+    var result = items[sel];
+//    [doc showMessage:"Here: " + result];
+    return result;
 }
 
 function alert(msg) {
@@ -188,7 +222,7 @@ function santize(fileName) {
     return fileName.replace(/[^\w\d]/g, '_').toLowerCase();
 }
 
-function process_slice(slice, doc, base_dir, factors) {
+function process_slice(slice, doc, base_dir, factors,isIconOrDrawable) {
     log("Will process slices");
     var frame = [slice frame];
     var slice_name = [slice name];
@@ -197,20 +231,24 @@ function process_slice(slice, doc, base_dir, factors) {
         var factor = factors[name];
         log("Processing " + slice_name + " " + name + " (" + factor + ")");
         var version = copy_layer_with_factor(slice, factor);
-        var file_name = base_dir + "/drawable-" + name + "/" + santize(slice_name) + ".png";
-        [doc saveArtboardOrSlice: version toFile:file_name];
-        log("Saved " + file_name);
+        var file_name_Drawable = base_dir + "/drawable-" + name + "/" + santize(slice_name) + ".png";
+        var file_name_Icon = base_dir + "/mipmap-" + name + "/" + santize(slice_name) + ".png";
+        if(isIconOrDrawable == "Icon"){
+            [doc saveArtboardOrSlice: version toFile:file_name_Icon];
+        }else{
+            [doc saveArtboardOrSlice: version toFile:file_name_Drawable];
+        }
+        
+        log("Saved ");
     }
 }
 
 function copy_layer_with_factor(original_slice, factor) {
     var copy = [original_slice duplicate];
     var rect = copy.className() == "MSArtboardGroup" ? rect = copy.absoluteRect().rect() : copy.absoluteInfluenceRect()
-    var request = MSExportRequest.new();
-    request.rect = rect;
-    request.scale = factor;
+    var slice = MSExportRequest.requestWithRect_scale(rect, factor)
     [copy removeFromParent];
-    return request;
+    return slice;
 }
 
 main();
