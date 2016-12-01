@@ -134,7 +134,7 @@ function main() {
 
 
 function askForIconOrDrawable() {
-    var selectedItemIndex = 0;
+    var selectedItemIndex = 1;
     var items = ["Icon","Drawable"];
 
     var accContainer = [[NSView alloc] initWithFrame:NSMakeRect(0,0,200,25)];
